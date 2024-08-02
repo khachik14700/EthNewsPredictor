@@ -24,3 +24,5 @@ This project analyzes Ethereum-related news and sends alerts via Telegram based 
 **Project Presentation**: [Google Slides Presentation](https://docs.google.com/presentation/d/1gBxnHilzxAVnoVuUfD2br7sJJpTeZN6MN_lMQcXGF9U/edit?usp=sharing)
 
 **Project Schema**: [Miro Board](https://miro.com/welcomeonboard/SjRQQkFTQTBsakYyOXN3YXJsRnMzcWZkaFBEandGQ1F5YVBmMEpUTDhkWUZHSkRVcXo3S2tjVmkzS1FmQWFBTXwzNDU4NzY0NTk1OTM5MzYxNDQ2fDI=?share_link_id=390371432230)
+
+**Power BI Dashboard**: [Power BI Link](https://app.powerbi.com/groups/me/reports/ebb476e8-5eb0-4397-80a5-3b2f73a1f1e9?ctid=213f334a-cb6f-4f92-825f-ebb829ab25f2&pbi_source=linkShare)
