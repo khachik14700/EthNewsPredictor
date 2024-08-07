@@ -22,6 +22,9 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 import aiofiles
 import time
+import matplotlib.pyplot as plt
+from PIL import Image
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 import asyncio
 
 #Load environment variables and configure database connection
