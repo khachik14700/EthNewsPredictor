@@ -284,8 +284,8 @@ while True:
 
                 plt.text(0.5, 1.05, pd.Timestamp.now().strftime('%Y-%m-%d'), ha='center', va='center', transform=ax.transAxes, fontsize=12)
 
-                up_icon = Image.open('upp.png')  # Replace with the path to your up arrow icon
-                down_icon = Image.open('do.png')  # Replace with the path to your down arrow icon
+                up_icon = Image.open('upp.png')
+                down_icon = Image.open('do.png')
 
                 def add_icon(ax, image, position, zoom=1):
                     imagebox = OffsetImage(image, zoom=zoom)
@@ -293,7 +293,7 @@ while True:
                     ax.add_artist(ab)
 
                 if pred.item() == 0:
-                    add_icon(ax, down_icon, (-0.08, 0.4), zoom=0.2)  # Adjust position and zoom as needed
+                    add_icon(ax, down_icon, (-0.08, 0.4), zoom=0.2)
                     plt.text(-0.08, 0.55, 'Prediction', ha='center', va="center", transform=ax.transAxes, fontsize=10)
                 else:
                     add_icon(ax, up_icon, (-0.08, 0.6), zoom=0.2)
