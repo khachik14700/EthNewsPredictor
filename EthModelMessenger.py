@@ -22,6 +22,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 import aiofiles
 import time
+import asyncio
 
 #Load environment variables and configure database connection
 
@@ -269,7 +270,36 @@ while True:
                 ohlc_df_m.set_index('Date', inplace=True)
                 
                 plot_filename = 'ohlc_plot.png'
-                mpf.plot(ohlc_df_m, type='candle', style='charles', ylabel='Price', savefig=plot_filename)
+                fig, ax = plt.subplots()
+
+                mpf.plot(
+                    ohlc_df_m,
+                    type='candle',
+                    style='charles',
+                    ylabel='Price (USD)',
+                    show_nontrading=True,
+                    ax=ax,
+                    datetime_format='%H:%M'
+                )
+
+                plt.text(0.5, 1.05, pd.Timestamp.now().strftime('%Y-%m-%d'), ha='center', va='center', transform=ax.transAxes, fontsize=12)
+
+                up_icon = Image.open('upp.png')  # Replace with the path to your up arrow icon
+                down_icon = Image.open('do.png')  # Replace with the path to your down arrow icon
+
+                def add_icon(ax, image, position, zoom=1):
+                    imagebox = OffsetImage(image, zoom=zoom)
+                    ab = AnnotationBbox(imagebox, position, frameon=False, xycoords='axes fraction')
+                    ax.add_artist(ab)
+
+                if pred.item() == 0:
+                    add_icon(ax, down_icon, (-0.08, 0.4), zoom=0.2)  # Adjust position and zoom as needed
+                    plt.text(-0.08, 0.55, 'Prediction', ha='center', va="center", transform=ax.transAxes, fontsize=10)
+                else:
+                    add_icon(ax, up_icon, (-0.08, 0.6), zoom=0.2)
+                    plt.text(-0.08, 0.45, 'Prediction', ha='center', va="center", transform=ax.transAxes, fontsize=10)
+
+                plt.savefig(plot_filename)
 
                 PHOTO_PATH = 'ohlc_plot.png'
                 bot = Bot(token=BOT_TOKEN)
@@ -278,10 +308,9 @@ while True:
                 async def send_plot():
                     async with aiofiles.open(PHOTO_PATH, 'rb') as photo:
                         await bot.send_photo(CHAT_ID, photo)
-
-                import asyncio
+                            
                 asyncio.run(send_plot())
-
+                    
                 #Send market prediction message via Telegram
 
                 message = f"📊The market is expected to go {direction}. 💰Current price: ${current_price:.2f}"
