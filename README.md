@@ -21,7 +21,7 @@ This project analyzes Ethereum-related news and sends alerts via Telegram based 
 3. **Interact with the Bot**: Follow any additional instructions provided by the bot for customized notifications or queries.
 
 ## Additional Resources
-**Project Presentation**: [Google Slides Presentation](https://docs.google.com/presentation/d/1gBxnHilzxAVnoVuUfD2br7sJJpTeZN6MN_lMQcXGF9U/edit?usp=sharing).
+**Project Presentation**: [Google Slides Presentation](https://docs.google.com/presentation/d/1gBxnHilzxAVnoVuUfD2br7sJJpTeZN6MN_lMQcXGF9U/edit?usp=sharing)
 
 **Project Schema**: [Miro Board](https://miro.com/welcomeonboard/SjRQQkFTQTBsakYyOXN3YXJsRnMzcWZkaFBEandGQ1F5YVBmMEpUTDhkWUZHSkRVcXo3S2tjVmkzS1FmQWFBTXwzNDU4NzY0NTk1OTM5MzYxNDQ2fDI=?share_link_id=390371432230)
 
