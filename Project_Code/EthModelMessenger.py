@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 import asyncio
+import schedule
 
 #Load environment variables and configure database connection
 
@@ -38,6 +39,74 @@ db = 'postgres'
 conn = psycopg2.connect(host=host, port=port, user=user, password=password, dbname=db)
 connection_string = f"postgresql://{user}:{password}@{host}/{db}"
 engine = create_engine(connection_string)
+
+
+# Define the function to send the daily report
+
+def send_daily_report():
+
+    BASE_URL = os.getenv('BASE_URL_Current')
+    def get_current_price(symbol):
+        params = {
+            'symbol': symbol
+        }
+        response = requests.get(BASE_URL, params=params)
+        
+        if response.status_code == 200:
+            data = response.json()
+            return float(data['price'])
+        else:
+            print(f"Error: {response.status_code}")
+            print(response.text)
+            return None
+
+    symbol = 'ETHUSDT'
+    current_price = get_current_price(symbol)
+        
+    sql = "SELECT * FROM df_teleg"
+    df = pd.read_sql(sql, engine)
+
+    if df.iloc[-1]['pred'] == 0 and df.iloc[-1]['open'] >= current_price:
+        df.at[df.index[-1], 'status'] = 1
+    elif df.iloc[-1]['pred'] == 0 and df.iloc[-1]['open'] < current_price:
+        df.at[df.index[-1], 'status'] = 0
+    elif df.iloc[-1]['pred'] == 1 and df.iloc[-1]['open'] <= current_price:
+        df.at[df.index[-1], 'status'] = 1
+    elif df.iloc[-1]['pred'] == 1 and df.iloc[-1]['open'] > current_price:
+        df.at[df.index[-1], 'status'] = 0
+
+    scsess = len(df[df['status'] == 1])
+    failed = len(df[df['status'] == 0])
+    current_d = pd.Timestamp.now().strftime('%Y-%m-%d')
+
+    report_message = f"📅 Daily Report : {current_d }\n\n" \
+                     f"✅Successful Predictions : {scsess}\n" \
+                     f"❌Failed Predictions : {failed}\n"
+    
+    df.to_sql(name = 'df_teleg'
+            , con = engine
+            , index = False
+            , if_exists ='replace')
+    
+    send_message(report_message)
+
+BOT_TOKEN = os.getenv('TELEGRAM_TOKEN')
+CHAT_ID = os.getenv('CHAT_ID')
+
+def send_message(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {
+        'chat_id': CHAT_ID,
+        'text': message
+    }
+    response = requests.post(url, data=payload)
+    if response.status_code == 200:
+        print("Message sent successfully")
+    else:
+        print(f"Failed to send message. Status code: {response.status_code}")
+
+# Schedule the daily report at 12:00 PM
+schedule.every().day.at("12:00").do(send_daily_report)
 
 
 
@@ -266,6 +335,8 @@ while True:
             
             for pred in predictions:
 
+                df.at[df.index[-1], 'pred'] =  pred.item()
+
                 #Plot OHLC data and send it via Telegram
 
                 direction = "down 📉" if pred.item() == 0 else "up 📈"
@@ -332,6 +403,6 @@ while True:
                     , index = False
                     , if_exists ='replace')
 
-        #Save updated data to the database
 
-        time.sleep(120)
+        schedule.run_pending()
+        time.sleep(10)
