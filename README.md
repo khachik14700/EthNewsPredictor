@@ -17,9 +17,9 @@ This project analyzes Ethereum-related news and sends alerts via Telegram based 
 **Daily Reports**
 ***We are now providing Daily Reports every day at 12:00 PM. These reports include:***
 
-Successful Predictions 📈
+Successful Predictions ✅
 
-Failed Predictions 📉
+Failed Predictions ❌
 
 These updates help you keep track of our model's performance and the latest market trends.
 
