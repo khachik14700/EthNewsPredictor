@@ -14,6 +14,15 @@ This project analyzes Ethereum-related news and sends alerts via Telegram based 
 
 **Description**: Our Telegram bot sends real-time Ethereum price predictions and alerts based on the latest CoinDesk news. Stay informed with up-to-date predictions and trends directly on your Telegram.
 
+**Daily Reports**
+***We are now providing Daily Reports every day at 12:00 PM. These reports include:***
+
+Successful Predictions 📈
+
+Failed Predictions 📉
+
+These updates help you keep track of our model's performance and the latest market trends.
+
 ### How to Use the Bot
 
 1. **Start the Bot**: Click on the @eth_bo link or search for "eth_bo" on Telegram and start a chat with the bot.
