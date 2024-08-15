@@ -77,7 +77,7 @@ def send_daily_report():
 
     scsess = len(df[df['status'] == 1])
     failed = len(df[df['status'] == 0])
-    current_d = pd.Timestamp.now().strftime('%Y-%m-%d')
+    current_d = pd.Timestamp.now().strftime('%B %d, %Y')
 
     report_message = f"📅 Daily Report : {current_d }\n\n" \
                      f"✅Successful Predictions : {scsess}\n" \
