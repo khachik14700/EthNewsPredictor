@@ -337,6 +337,17 @@ while True:
 
                 df.at[df.index[-1], 'pred'] =  pred.item()
 
+
+                if pd.isna(df.iloc[-2]['status']):
+                    if df.iloc[-2]['pred'] == 0 and df.iloc[-2]['open'] >= current_price:
+                        df.at[df.index[-2], 'status'] = 1
+                    elif df.iloc[-2]['pred'] == 0 and df.iloc[-2]['open'] < current_price:
+                        df.at[df.index[-2], 'status'] = 0
+                    elif df.iloc[-2]['pred'] == 1 and df.iloc[-2]['open'] <= current_price:
+                        df.at[df.index[-2], 'status'] = 1
+                    elif df.iloc[-2]['pred'] == 1 and df.iloc[-2]['open'] > current_price:
+                        df.at[df.index[-2], 'status'] = 0
+
                 #Plot OHLC data and send it via Telegram
 
                 direction = "down 📉" if pred.item() == 0 else "up 📈"
